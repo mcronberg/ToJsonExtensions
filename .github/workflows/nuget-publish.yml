@@ -19,7 +19,7 @@ jobs:
 
     - name: Bump patch version
       run: |
-        FILE="JsonExtensions/JsonExtensions.csproj"
+        FILE="src/ToJsonExtensions/ToJsonExtensions.csproj"
         VERSION=$(grep '<VersionPrefix>' $FILE | sed -E 's/.*>(.*)<.*/\1/')
         BASE=$(echo $VERSION | cut -d. -f1,2)
         PATCH=$(echo $VERSION | cut -d. -f3)
@@ -29,13 +29,13 @@ jobs:
         echo "New version: $NEWVERSION"
 
     - name: Restore dependencies
-      run: dotnet restore JsonExtensions
+      run: dotnet restore src/ToJsonExtensions
 
     - name: Build
-      run: dotnet build JsonExtensions --configuration Release
+      run: dotnet build src/ToJsonExtensions --configuration Release
 
     - name: Pack
-      run: dotnet pack JsonExtensions --configuration Release --output ./nupkgs
+      run: dotnet pack src/ToJsonExtensions --configuration Release --output ./nupkgs
 
     - name: Push to NuGet
       run: dotnet nuget push ./nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
