@@ -10,7 +10,7 @@
         <Company>Michell Cronberg</Company>
         <PackageId>ToJsonExtensions</PackageId>
         <Description>Extension methods for JSON serialization using System.Text.Json.</Description>
-        <RepositoryUrl>https://github.com/devcronberg/ToJsonExtensions</RepositoryUrl>
+        <RepositoryUrl>https://github.com/mcronberg/ToJsonExtensions</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
