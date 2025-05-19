@@ -1,0 +1,41 @@
+name: Publish NuGet package
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.x'
+
+    - name: Bump patch version
+      run: |
+        FILE="JsonExtensions/JsonExtensions.csproj"
+        VERSION=$(grep '<VersionPrefix>' $FILE | sed -E 's/.*>(.*)<.*/\1/')
+        BASE=$(echo $VERSION | cut -d. -f1,2)
+        PATCH=$(echo $VERSION | cut -d. -f3)
+        NEWPATCH=$((PATCH + 1))
+        NEWVERSION="$BASE.$NEWPATCH"
+        sed -i "s|<VersionPrefix>.*</VersionPrefix>|<VersionPrefix>${NEWVERSION}</VersionPrefix>|" $FILE
+        echo "New version: $NEWVERSION"
+
+    - name: Restore dependencies
+      run: dotnet restore JsonExtensions
+
+    - name: Build
+      run: dotnet build JsonExtensions --configuration Release
+
+    - name: Pack
+      run: dotnet pack JsonExtensions --configuration Release --output ./nupkgs
+
+    - name: Push to NuGet
+      run: dotnet nuget push ./nupkgs/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
