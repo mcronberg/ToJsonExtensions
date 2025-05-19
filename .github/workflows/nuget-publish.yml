@@ -20,16 +20,7 @@ jobs:
     - name: Copy readme.md to project folder
       run: cp readme.md src/ToJsonExtensions/readme.md
 
-    - name: Bump patch version
-      run: |
-        FILE="src/ToJsonExtensions/ToJsonExtensions.csproj"
-        VERSION=$(grep '<VersionPrefix>' $FILE | sed -E 's/.*>(.*)<.*/\1/')
-        BASE=$(echo $VERSION | cut -d. -f1,2)
-        PATCH=$(echo $VERSION | cut -d. -f3)
-        NEWPATCH=$((PATCH + 1))
-        NEWVERSION="$BASE.$NEWPATCH"
-        sed -i "s|<VersionPrefix>.*</VersionPrefix>|<VersionPrefix>${NEWVERSION}</VersionPrefix>|" $FILE
-        echo "New version: $NEWVERSION"
+
 
     - name: Restore dependencies
       run: dotnet restore src/ToJsonExtensions
