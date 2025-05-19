@@ -17,6 +17,9 @@ jobs:
       with:
         dotnet-version: '9.x'
 
+    - name: Copy readme.md to project folder
+      run: cp readme.md src/ToJsonExtensions/readme.md
+
     - name: Bump patch version
       run: |
         FILE="src/ToJsonExtensions/ToJsonExtensions.csproj"
