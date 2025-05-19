@@ -12,6 +12,11 @@
         <Description>Extension methods for JSON serialization using System.Text.Json.</Description>
         <RepositoryUrl>https://github.com/mcronberg/ToJsonExtensions</RepositoryUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>../../readme.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../../readme.md" Pack="true" PackagePath="" />
+    </ItemGroup>
 
 </Project>
