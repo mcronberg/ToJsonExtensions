@@ -18,8 +18,6 @@ public static class JsonExtensions
         if (obj == null)
             return "null";
 
-        namingPolicy ??= JsonNamingPolicy.CamelCase;
-
         var options = new JsonSerializerOptions
         {
             WriteIndented = indented,
@@ -38,8 +36,6 @@ public static class JsonExtensions
     /// <param name="namingPolicy">The naming policy to apply (default: camelCase).</param>
     public static async Task ToJsonStreamAsync(this object obj, Stream stream, bool indented = false, JsonNamingPolicy? namingPolicy = null)
     {
-        namingPolicy ??= JsonNamingPolicy.CamelCase;
-
         var options = new JsonSerializerOptions
         {
             WriteIndented = indented,

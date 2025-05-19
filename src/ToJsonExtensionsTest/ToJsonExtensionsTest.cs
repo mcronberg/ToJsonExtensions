@@ -20,7 +20,7 @@ public class JsonExtensionsTests
         var person = new Person { FirstName = "Michell", Age = 50 };
         string json = person.ToJsonString();
 
-        Assert.Contains("\"firstName\"", json);  // camelCase by default
+        Assert.Contains("\"FirstName\"", json);  // PascalCase by default
         Assert.Contains("50", json);
     }
 
@@ -51,7 +51,7 @@ public class JsonExtensionsTests
 
         Assert.True(File.Exists(path));
         string content = File.ReadAllText(path);
-        Assert.Contains("\"firstName\"", content);
+        Assert.Contains("\"FirstName\"", content);
     }
 
     [Fact]
@@ -65,5 +65,14 @@ public class JsonExtensionsTests
         Assert.True(File.Exists(path));
         string content = File.ReadAllText(path);
         Assert.Contains("async", content.ToLower());
+    }
+
+    [Fact]
+    public void ToJsonString_UsesPropertyNames_WhenNoNamingPolicy()
+    {
+        var person = new Person { FirstName = "Michell", Age = 50 };
+        string json = person.ToJsonString(namingPolicy: null);
+        Assert.Contains("FirstName", json); // Skal være med stort F
+        Assert.Contains("50", json);
     }
 }
