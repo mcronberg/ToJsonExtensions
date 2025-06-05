@@ -75,4 +75,15 @@ public class JsonExtensionsTests
         Assert.Contains("FirstName", json); // Skal være med stort F
         Assert.Contains("50", json);
     }
+
+    [Fact]
+    public async Task ToJsonStreamAsync_WithNullObject_WritesNull()
+    {
+        using var stream = new MemoryStream();
+        await JsonExtensions.ToJsonStreamAsync((object?)null, stream);
+        stream.Position = 0;
+        using var reader = new StreamReader(stream);
+        string result = reader.ReadToEnd();
+        Assert.Equal("null", result);
+    }
 }

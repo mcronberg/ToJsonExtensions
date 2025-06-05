@@ -11,7 +11,7 @@ public static class JsonExtensions
     /// </summary>
     /// <param name="obj">The object to serialize.</param>
     /// <param name="indented">Whether to indent the JSON output (default: false).</param>
-    /// <param name="namingPolicy">The naming policy to apply (default: camelCase).</param>
+    /// <param name="namingPolicy">The naming policy to apply (default: none).</param>
     /// <returns>A JSON-formatted string.</returns>
     public static string ToJsonString(this object? obj, bool indented = false, JsonNamingPolicy? namingPolicy = null)
     {
@@ -33,8 +33,8 @@ public static class JsonExtensions
     /// <param name="obj">The object to serialize.</param>
     /// <param name="stream">The target stream to write JSON to.</param>
     /// <param name="indented">Whether to indent the JSON output (default: false).</param>
-    /// <param name="namingPolicy">The naming policy to apply (default: camelCase).</param>
-    public static async Task ToJsonStreamAsync(this object obj, Stream stream, bool indented = false, JsonNamingPolicy? namingPolicy = null)
+    /// <param name="namingPolicy">The naming policy to apply (default: none).</param>
+    public static async Task ToJsonStreamAsync(this object? obj, Stream stream, bool indented = false, JsonNamingPolicy? namingPolicy = null)
     {
         var options = new JsonSerializerOptions
         {
@@ -42,7 +42,14 @@ public static class JsonExtensions
             PropertyNamingPolicy = namingPolicy
         };
 
-        await JsonSerializer.SerializeAsync(stream, obj, obj.GetType(), options);
+        if (obj is null)
+        {
+            await JsonSerializer.SerializeAsync<object?>(stream, null, options);
+        }
+        else
+        {
+            await JsonSerializer.SerializeAsync(stream, obj, obj.GetType(), options);
+        }
     }
 
     /// <summary>
@@ -51,7 +58,7 @@ public static class JsonExtensions
     /// <param name="obj">The object to serialize.</param>
     /// <param name="path">The full file path to write to.</param>
     /// <param name="indented">Whether to indent the JSON output (default: false).</param>
-    /// <param name="namingPolicy">The naming policy to apply (default: camelCase).</param>
+    /// <param name="namingPolicy">The naming policy to apply (default: none).</param>
     public static async Task ToJsonFileAsync(this object obj, string path, bool indented = false, JsonNamingPolicy? namingPolicy = null)
     {
         using var stream = File.Create(path);
@@ -64,7 +71,7 @@ public static class JsonExtensions
     /// <param name="obj">The object to serialize.</param>
     /// <param name="path">The full file path to write to.</param>
     /// <param name="indented">Whether to indent the JSON output (default: false).</param>
-    /// <param name="namingPolicy">The naming policy to apply (default: camelCase).</param>
+    /// <param name="namingPolicy">The naming policy to apply (default: none).</param>
     public static void ToJsonFile(this object obj, string path, bool indented = false, JsonNamingPolicy? namingPolicy = null)
     {
         var json = obj.ToJsonString(indented, namingPolicy);
