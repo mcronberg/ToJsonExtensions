@@ -1,4 +1,4 @@
-﻿namespace JsonExtensions;
+namespace JsonExtensions;
 
 using System;
 using System.IO;

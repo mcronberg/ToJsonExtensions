@@ -1,4 +1,4 @@
-﻿namespace ToJsonExtensions;
+namespace ToJsonExtensions;
 
 using System.Text.Json;
 using System.Threading.Tasks;
